@@ -6,11 +6,16 @@ var API_URL2 ="/v1.4/summoner/by-name/";
 var API_ICON_URL_AVATAR = "http://avatar.leagueoflegends.com/";
 var API_ICON_URL_DDRAGON = "http://ddragon.leagueoflegends.com/cdn/5.2.1/img/profileicon/";
 
+
+//Formulari
 var username = $("[data-username]");
 var button = $("[data-searchbtn]");
+$(username).val("");
+$(button).on("click", searchSummoner);
+
+
 var summoner = $("[data-name]");
 
-$(button).on("click", searchSummoner);
 
 function searchSummoner (event) {
   event.preventDefault();
@@ -50,7 +55,7 @@ function getID (data) {
   lvl.innerHTML = data[summonerName].summonerLevel;
 
   console.log(data);
-
+  $(username).val("");
 }
 
 })()
