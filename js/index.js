@@ -5,8 +5,7 @@ var API_URL_ROOT = ".api.pvp.net/api/lol/"
 var API_URL_SUMMONERNAME ="/v1.4/summoner/by-name/";
 var API_URL_RANKED = "/v2.5/league/by-summoner/"
 
-var API_ICON_URL_AVATAR = "http://avatar.leagueoflegends.com/";
-var API_ICON_URL_DDRAGON = "http://ddragon.leagueoflegends.com/cdn/5.2.1/img/profileicon/";
+var API_ICON_URL = "http://sk2.op.gg/images/profile_icons/profileIcon"
 
 //Rank path
 var rankImages = {
@@ -31,7 +30,7 @@ var rankImages = {
     IV: "images/gold_iv.png",
     V: "images/gold_v.png"
   },
-  PLATINIUM: {
+  PLATINUM: {
     I: "images/platinum_i.png",
     II: "images/platinum_ii.png",
     III: "images/platinum_iii.png",
@@ -39,7 +38,7 @@ var rankImages = {
     V: "images/platinum_v.png"
   },
   DIAMOND: {
-    I: "imgages/diamond_i.png",
+    I: "images/diamond_i.png",
     II: "images/diamond_ii.png",
     III: "images/diamond_iii.png",
     IV: "images/diamond_iv.png",
@@ -70,19 +69,18 @@ function searchSummoner (event) {
   event.preventDefault();
   var c = document.getElementById('region');
   var region = c.value;
-  console.log("OK");
   var summonerName = $(username).val().toLowerCase().replace(/ /g,'');
-  var summonerPath = "https://" + region + API_URL_ROOT + region + API_URL_SUMMONERNAME + summonerName + "/?api_key=" + API_KEY;
-  $.getJSON(summonerPath, getID).fail(errorFound);
+  if(summonerName != "") {
+    var summonerPath = "https://" + region + API_URL_ROOT + region + API_URL_SUMMONERNAME + summonerName + "/?api_key=" + API_KEY;
+    $.getJSON(summonerPath, getID).fail(errorFound);
+}
 }
 
 
 //Error si no encuentra summoner
 function errorFound (jqxhr, textStatus, err) {
-  if(!$(username).val("")){
     var error = textStatus + ", " + error;
     alert("Request Failed: " + err);
-  }
 }
 
 //Rellena los campos del summoner
@@ -96,11 +94,13 @@ function getID (data) {
 
     id.innerHTML = "Name: " + data[summonerName].name;
     lvl.innerHTML = "Lvl: " + data[summonerName].summonerLevel;
+
+
     getIcon(data[summonerName].profileIconId);
     getRankedStats(data[summonerName].id);
 
 
-    console.log(data);
+    //Reinicar input a 0
     $(username).val("");
   }
 }
@@ -108,48 +108,32 @@ function getID (data) {
 
 
 
-function getIcon(url) {
+function getIcon(id) {
   var icon = document.getElementById('img');
-  var iconPath = API_ICON_URL_DDRAGON + url + ".png";
-
- //Cambia el path de la imagen/icono si no funciona con ddragon
-  $.get(iconPath).done (
-    function () {
-      icon.src = iconPath;
-    }).fail(function (){
-    iconPath = API_ICON_URL_AVATAR + region + "/" + summonerName + ".png";
-    icon.src = iconPath;
-  })
+  var iconPath = API_ICON_URL + id + ".jpg";
+  icon.src = iconPath;
 }
 
 
 
 
-function getRankedStats(url) {
+function getRankedStats(id) {
   var rank = document.getElementById('wins/losses');
   var rankIco = document.getElementById('rank');
-  var rankPath = "https://"+ region + API_URL_ROOT + region + API_URL_RANKED + url + "/entry?api_key=" + API_KEY;
+  var rankPath = "https://"+ region + API_URL_ROOT + region + API_URL_RANKED + id + "/entry?api_key=" + API_KEY;
   $.getJSON(rankPath, function (data){
-    if(data)
-    console.log(data);
-    var wins = data[url][0].entries[0].wins;
-    var losses = data[url][0].entries[0].losses;
-    /*
-    //Busca en data(json) el número de rankeds wins/losses
-    var matched = false;
-    var i;
-    for(i = 0;i < 12 && !matched; ++i) {
-      if(data.playerStatSummaries[i].playerStatSummaryType == "RankedSolo5x5") {
-        console.log("Matched!");
-        matched = true;
-      }
-    }*/
-    var league = data[url][0].tier;
-    var division = data[url][0].entries[0].division;
+
+    var wins = data[id][0].entries[0].wins;
+    var losses = data[id][0].entries[0].losses;
+    var league = data[id][0].tier;
+    var division = data[id][0].entries[0].division;
+    var leaguePoints = data[id][0].entries[0].leaguePoints;
+
+    //console.log(data);
     rankIco.src = rankImages[league][division];
-    rank.innerHTML = "Ranked W/L: " + wins + "/" + losses;
+    rank.innerHTML = league + " " + division + "<br>Ranked W/L: " + wins + "/" + losses + "<br>" + leaguePoints  +" LP";
   }).error(function () {
-    rank.innerHTML = "-unranked-";
+    rank.innerHTML = "-UNRANKED-";
     rankIco.src = rankImages.UNRANKED;
   });
 }
