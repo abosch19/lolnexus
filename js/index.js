@@ -65,11 +65,25 @@ var summoner = $("[data-name]");
 var region;
 var summonerName;
 
+
+
+//Start!
+if(localStorage.getItem("lastSummoner")){
+  /*var lastSummoner = localStorage.getItem("lastSummoner");
+  var lastRegion = localStorage.getItem("lastRegion");
+  $(username).val(lastSummoner);
+  var c = document.getElementById('region');
+  searchSummoner();
+  */
+  console.log("SI LocalStorage");
+}
+
+
 function searchSummoner (event) {
   event.preventDefault();
   var c = document.getElementById('region');
-  var region = c.value;
-  var summonerName = $(username).val().toLowerCase().replace(/ /g,'');
+  region = c.value;
+  summonerName = $(username).val().toLowerCase().replace(/ /g,'');
   if(summonerName != "") {
     var summonerPath = "https://" + region + API_URL_ROOT + region + API_URL_SUMMONERNAME + summonerName + "/?api_key=" + API_KEY;
     $.getJSON(summonerPath, getID).fail(errorFound);
@@ -95,12 +109,15 @@ function getID (data) {
     id.innerHTML = "Name: " + data[summonerName].name;
     lvl.innerHTML = "Lvl: " + data[summonerName].summonerLevel;
 
-
     getIcon(data[summonerName].profileIconId);
     getRankedStats(data[summonerName].id);
 
 
     //Reinicar input a 0
+
+    localStorage.setItem("lastSummoner",summonerName);
+    localStorage.setItem("region", region);
+
     $(username).val("");
   }
 }
