@@ -62,8 +62,24 @@ $(button).on("click", searchSummoner);
 
 var summoner = $("[data-name]");
 
-var region;
+var region = "euw";
 var summonerName;
+
+
+//Cambio de region
+function regionNA() {
+  region = "na";
+}
+function regionEUW() {
+  region = "euw";
+}
+function regionEUNE() {
+  region = "eune";
+}
+function regionBR() {
+  region = "br";
+}
+
 
 
 
@@ -75,14 +91,13 @@ if(localStorage.getItem("lastSummoner")){
   var c = document.getElementById('region');
   searchSummoner();
   */
-  console.log("SI LocalStorage");
+  console.log("LocalStorage: OK");
 }
 
 
 function searchSummoner (event) {
   event.preventDefault();
-  var c = document.getElementById('region');
-  region = c.value;
+  console.log(region);
   summonerName = $(username).val().toLowerCase().replace(/ /g,'');
   if(summonerName != "") {
     var summonerPath = "https://" + region + API_URL_ROOT + region + API_URL_SUMMONERNAME + summonerName + "/?api_key=" + API_KEY;
@@ -100,8 +115,6 @@ function errorFound (jqxhr, textStatus, err) {
 //Rellena los campos del summoner
 function getID (data) {
   if(!$(username).val() == ""){
-    var c = document.getElementById('region');
-    region = c.value;
     summonerName = $(username).val().toLowerCase().replace(/ /g,'');
     var id = document.getElementById('id');
     var lvl = document.getElementById('lvl');
