@@ -4,10 +4,10 @@
 }
 
 body {
-	background-color: red;
+	background-color: lightblue;
 }
 
-img {
+.summonerIcon {
   border-radius: 150px;
 	-webkit-border-radius: 150px;
 	-moz-border-radius: 150px;
