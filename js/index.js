@@ -66,19 +66,8 @@ var region = "euw";
 var summonerName;
 
 
-//Cambio de region
-function regionNA() {
-  region = "na";
-}
-function regionEUW() {
-  region = "euw";
-}
-function regionEUNE() {
-  region = "eune";
-}
-function regionBR() {
-  region = "br";
-}
+//Region elegida
+console.log($('input[name=region]:checked','#myForm').val())
 
 
 
@@ -92,6 +81,8 @@ if(localStorage.getItem("lastSummoner")){
   searchSummoner();
   */
   console.log("LocalStorage: OK");
+  console.log("lastSummoner: " + localStorage.getItem("lastSummoner"));
+  console.log("region: "+ localStorage.getItem("region"));
 }
 
 

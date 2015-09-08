@@ -40,10 +40,22 @@
       </div>
     </template>
 
-    <form class="formulario" action="" >
+    <form class="formulario" action="" id="myForm">
       <input type="text" data-username class="search" placeholder="Search player...">
       <input type="submit" data-searchbtn value="Search" class="">
+      <br>
+      <input type="radio" name="region" value="na" id="na">NA
+      <input type="radio" name="region" value="euw" onclick="regionEUW" checked>EUW
+      <input type="radio" name="region" value="eune" onclick="regionEUNE" >EUNE
+      <input type="radio" name="region" value="br" onclick="regionBR" >BR
+
     </form>
+    <script type="text/javascript">
+      document.getElementById('na').click();
+      function regionNA() {
+        console.log("NA");
+      }
+    </script>
     <!--
     <select class="" name="" id="region">
       <option value="na">NA</option>
@@ -52,11 +64,6 @@
       <option value="br">BR</option>
     </select>
   -->
-    <input type="radio" name="region" value="na" onclick="regionNA()" >NA
-    <input type="radio" name="region" value="euw" onclick="regionEUW" checked>EUW
-    <input type="radio" name="region" value="eune" onclick="regionEUNE" >EUNE
-    <input type="radio" name="region" value="br" onclick="regionBR" >BR
-
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
